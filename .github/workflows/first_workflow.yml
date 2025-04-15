@@ -8,3 +8,8 @@ jobs:
       run: echo "First Step ..."
     - name: secound_step
       run: echo "Secound step ..."
+    - name: multi_line_command
+      run: |
+        ls -la
+        whoami
+        pwd
