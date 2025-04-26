@@ -1,6 +1,6 @@
 name: Docker Test
 
-on: [workflow_dispatch]
+on: [push]
 
 env:
   registry: ghcr.io
@@ -31,15 +31,15 @@ jobs:
         pwd
         ls -ls
         whoami
-        echo "Labels: ${{ .steps.metadata.outputs.labels }}"
-        echo "Tags: ${{ .steps.metadata.outputs.tags }}"
+        echo "Labels: ${{ steps.metadata.outputs.labels }}"
+        echo "Tags: ${{ steps.metadata.outputs.tags }}"
     - name: Build and Push
       uses: docker/build-push-action@v6.16.0
       with:
         context: .
         push: true
-        tags: ${{ .steps.metadata.outputs.tags }}
-        labels: ${{ .steps.metadata.outputs.labels }}
+        tags: ${{ steps.metadata.outputs.tags }}
+        labels: ${{ steps.metadata.outputs.labels }}
     
         
       
