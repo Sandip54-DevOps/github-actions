@@ -12,7 +12,7 @@ jobs:
         include:
         - color: white
           pet: dog
-  steps:
-  - run: echo "Hello ${{ matrix.color }} ${{ matrix.pet }}"
+    steps:
+    - run: echo "Hello ${{ matrix.color }} ${{ matrix.pet }}"
   
   
