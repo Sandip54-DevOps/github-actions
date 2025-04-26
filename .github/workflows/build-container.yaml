@@ -1,0 +1,46 @@
+name: Docker Test
+
+on: [workflow_dispatch]
+
+env:
+  registry: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  build-docker:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Log In Docker Repo
+      uses: docker/login-action@v3.4.0
+      with:
+        registry: ${{ env.registry }}
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+    - name: Extract Metadata
+      id: metadata
+      uses: docker/metadata-action@v5.7.0
+      with:
+        images: ${{ env.registry }}/${{ env.IMAGE_NAME }}
+    - name: Check Metadata
+      run: |
+        pwd
+        ls -ls
+        whoami
+        echo "Labels: ${{ .steps.metadata.outputs.labels }}"
+        echo "Tags: ${{ .steps.metadata.outputs.tags }}"
+    - name: Build and Push
+      uses: docker/build-push-action@v6.16.0
+      with:
+        context: .
+        push: true
+        tags: ${{ .steps.metadata.outputs.tags }}
+        labels: ${{ .steps.metadata.outputs.labels }}
+    
+        
+      
+
